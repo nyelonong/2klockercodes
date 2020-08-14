@@ -5,43 +5,39 @@ import os
 import requests
 from datetime import datetime as dt
 
-def lambda_handler(event, context):
-    data = requests.get("https://www.nba2k.io/page-data/20/active-locker-codes/page-data.json").json()
+data = requests.get("https://www.nba2k.io/page-data/20/active-locker-codes/page-data.json").json()
+
+tg_chat_id = os.environ["TELEGRAM_ID"]
+tg_token = os.environ["TELEGRAM_TOKEN"]
+
+jakarta = dateutil.tz.gettz("Asia/Jakarta")
+mountain = dateutil.tz.gettz("US/Mountain")
+
+edges = data["result"]["data"]["allLockerCodes"]["edges"]
+
+msg = ""
+for edge in edges:
+    code = edge["node"]["lockerCode"]
+    title = edge["node"]["title"]
+    create = dateutil.parser.parse(edge["node"]["dateAdded"])
+    now = dt.now(tz=mountain)
     
-    tg_chat_id = os.environ["TELEGRAM_ID"]
-    tg_token = os.environ["TELEGRAM_TOKEN"]
+    dur = now - create
+    if dur.days > 1:
+        continue
     
-    jakarta = dateutil.tz.gettz("Asia/Jakarta")
-    mountain = dateutil.tz.gettz("US/Mountain")
-    
-    edges = data["result"]["data"]["allLockerCodes"]["edges"]
-    
-    msg = ""
-    for edge in edges:
-        code = edge["node"]["lockerCode"]
-        title = edge["node"]["title"]
-        create = dateutil.parser.parse(edge["node"]["dateAdded"])
-        now = dt.now(tz=mountain)
+    expire_at = None
+    if edge["node"]["expiration"] is not None:
+        expire = dateutil.parser.parse(edge["node"]["expiration"])
         
-        dur = now - create
-        if dur.days > 1:
+        if now > expire:
             continue
         
-        expire_at = None
-        if edge["node"]["expiration"] is not None:
-            expire = dateutil.parser.parse(edge["node"]["expiration"])
-            
-            if now > expire:
-                continue
-            
-            expire_at = expire.astimezone(tz=jakarta)
-            
-        msg += f"Title: {title}\nCode: {code}\nCreated At: {create.astimezone(tz=jakarta)}\nExpire At: {expire.astimezone(tz=jakarta)}\n\n"
-    
-    params = {'chat_id': tg_chat_id, 'text': msg}
-    res = requests.post(f"https://api.telegram.org/bot{tg_token}/sendMessage", data=params).json()
-    
-    return {
-        'statusCode': 200,
-        'body': res
-    }
+        expire_at = expire.astimezone(tz=jakarta)
+        
+    msg += f"Title: {title}\nCode: {code}\nCreated At: {create.astimezone(tz=jakarta)}\nExpire At: {expire.astimezone(tz=jakarta)}\n\n"
+
+params = {'chat_id': tg_chat_id, 'text': msg}
+res = requests.post(f"https://api.telegram.org/bot{tg_token}/sendMessage", data=params).json()
+
+print(res)
