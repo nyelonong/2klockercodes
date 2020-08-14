@@ -1,7 +1,7 @@
 name: NBA 2k20 Locker Codes
 on:
   schedule:
-    - cron: '10 18 * * *'
+    - cron: '0 12 * * *'
 jobs:
   collector:
     name: NBA 2k20 locker codes collector
