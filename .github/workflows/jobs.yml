@@ -1,0 +1,19 @@
+name: NBA 2k20 Locker Codes
+on:
+  schedule:
+    - cron: '0 12 * * *'
+jobs:
+  collector:
+    name: NBA 2k20 locker codes collector
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@v2
+    - name: Set up Python 3.x
+      uses: actions/setup-python@v2
+      with:
+        python-version: '3.x' 
+        architecture: 'x64' 
+    - run: python 2k.py
+      env:
+        TELEGRAM_TOKEN: ${{ secrets.TELEGRAM_2K_BOT_TOKEN }}
+        TELEGRAM_ID: ${{ secrets.TELEGRAM_ID }}
