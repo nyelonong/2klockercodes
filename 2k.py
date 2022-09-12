@@ -5,10 +5,9 @@ import os
 import requests
 from datetime import datetime as dt
 
-data = requests.get("https://www.lockercodes.io/page-data/23/active-locker-codes/page-data.json").json()
-
 tg_chat_id = os.environ["TELEGRAM_ID"]
 tg_token = os.environ["TELEGRAM_TOKEN"]
+data = requests.get(os.environ["NBA2K_JSON"]).json()
 
 jakarta = dateutil.tz.gettz("Asia/Jakarta")
 mountain = dateutil.tz.gettz("US/Mountain")
