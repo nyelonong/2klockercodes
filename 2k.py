@@ -5,7 +5,7 @@ import os
 import requests
 from datetime import datetime as dt
 
-data = requests.get("https://www.lockercodes.io/page-data/22/active-locker-codes/page-data.json").json()
+data = requests.get("https://www.lockercodes.io/page-data/23/active-locker-codes/page-data.json").json()
 
 tg_chat_id = os.environ["TELEGRAM_ID"]
 tg_token = os.environ["TELEGRAM_TOKEN"]
