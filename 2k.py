@@ -40,5 +40,6 @@ if msg == '':
     msg = 'No code today :('
 
 params = {'chat_id': tg_chat_id, 'text': msg}
+print(params)
 res = requests.post(f"https://api.telegram.org/bot{tg_token}/sendMessage", data=params).json()
 print(res["ok"])    
