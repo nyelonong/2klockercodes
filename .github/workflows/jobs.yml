@@ -1,10 +1,10 @@
-name: NBA 2k20 Locker Codes
+name: NBA 2k Locker Codes
 on:
   schedule:
     - cron: '0 */6 * * *'
 jobs:
   collector:
-    name: NBA 2k20 locker codes collector
+    name: NBA 2k locker codes collector
     runs-on: ubuntu-latest
     steps:
     - uses: actions/checkout@v2
@@ -16,7 +16,7 @@ jobs:
     - name: Install dependencies
       run: if [ -f requirements.txt ]; then pip install -r requirements.txt; fi
     - name: Running app
-      run: python 2k.py
+      run: python 2k.py 24
       env:
         TELEGRAM_TOKEN: ${{ secrets.TELEGRAM_2K_BOT_TOKEN }}
         TELEGRAM_ID: ${{ secrets.TELEGRAM_ID }}
