@@ -15,9 +15,11 @@ jobs:
         architecture: 'x64' 
     - name: Install dependencies
       run: if [ -f requirements.txt ]; then pip install -r requirements.txt; fi
-    - name: Running app
+    - name: Running app with 24 version
       run: python 2k.py 24
       env:
         TELEGRAM_TOKEN: ${{ secrets.TELEGRAM_2K_BOT_TOKEN }}
         TELEGRAM_ID: ${{ secrets.TELEGRAM_ID }}
         NBA2K_JSON: ${{ secrets.NBA2K_JSON }}
+        LOCKERCODES_HOST: ${{ secrets.LOCKERCODES_HOST }}
+        LOCKERCODES_PATH: ${{ secrets.LOCKERCODES_PATH }}
